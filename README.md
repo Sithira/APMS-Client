@@ -10,4 +10,4 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app w
 
 Make sure you have a APMS-BACKEND `up and running on port 3333`
 
-
+_APMS-CLIENT for AAF Assesment 2018 - Sithira Munasinghe (27045236)_
