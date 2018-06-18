@@ -1,1 +1,32 @@
-<p>Sprint name: {{ sprint.name }}</p>
+<div class="row">
+    <div class="col-12">
+        <div class="jumbotron mt-5">
+            <h1 class="display-4 text-center">Sprint {{ sprint.name }}</h1>
+            <p class="lead text-center">project {{ project.name }}</p>
+            <hr class="my-4">
+            <!--<p>{{ project.name }}</p>-->
+
+            <!--<div class="form-row text-center">-->
+            <!--<div class="col-12">-->
+            <!--<button (click)="loadRelations()" [disabled]="relationsLoaded"  class="btn btn-primary"><i class="fa fa-info-circle"></i> Load More information</button>-->
+            <!--<br />-->
+            <!--<br />-->
+            <!--<a [hidden]="!relationsLoaded" [routerLink]="['sprints']" class="btn btn-default btn-sm">View Sprint Information</a>-->
+            <!--</div>-->
+            <!--</div>-->
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4" *ngFor="let ticket of sprint.tickets">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title text-center">{{ ticket.name }}</h4>
+                <p>{{ ticket.description }}</p>
+                <p>{{ ticket.created_at | date: 'short' }}</p>
+                <a [routerLink]="['tickets', ticket._id]">More info...</a>
+            </div>
+        </div>
+    </div>
+</div>

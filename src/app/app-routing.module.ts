@@ -9,6 +9,7 @@ import {ProjectComponent} from './projects/project/project.component';
 import {ErrorPageComponent} from './error-page/error-page.component';
 import {SprintComponent} from './sprints/sprint/sprint.component';
 import {TicketComponent} from './tickets/ticket/ticket.component';
+import {SprintsComponent} from './sprints/sprints.component';
 
 const routes: Routes = [
     {
@@ -32,6 +33,10 @@ const routes: Routes = [
             {
                 path: ':projectId',
                 component: ProjectComponent
+            },
+            {
+                path: ':projectId/sprints',
+                component: SprintsComponent
             },
             {
                 path: ':projectId/sprints/:sprintId',

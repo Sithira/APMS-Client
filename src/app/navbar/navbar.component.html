@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" routerLink="" routerLinkActive="active">APMS-Client</a>
+    <a class="navbar-brand" routerLink="" routerLinkActive="active"><img src="https://sdtimes.com/wp-content/uploads/2018/04/angular.png" width="35" height="35" alt=""> APMS-Client</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -29,18 +29,22 @@
         </ul>
 
         <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" *ngIf="isLoggedIn()">Hi, {{ getUsername() }}</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" *ngIf="isLoggedIn()" (click)="logout()" >Logout</a>
+            <li class="nav-item dropdown" [hidden]="!isLoggedIn()">
+
+                <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle" id="profileDropdown" href="javascript:void(0)" *ngIf="isLoggedIn()">Hi, {{ getUsername() }}</a>
+
+                <div class="dropdown-menu" aria-labelledby="profileDropdown">
+                    <a class="dropdown-item" href="#">My Profile</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" (click)="logout()"><i class="far far-sign-out"></i> Logout</a>
+                </div>
             </li>
 
-            <li class="nav-item" *ngIf="!isLoggedIn()">
+            <li class="nav-item" [hidden]="isLoggedIn()">
                 <a class="nav-link" routerLinkActive="active" routerLink="/login">Login</a>
             </li>
 
-            <li class="nav-item" *ngIf="!isLoggedIn()">
+            <li class="nav-item" [hidden]="isLoggedIn()">
                 <a class="nav-link" href="#">Register</a>
             </li>
         </ul>

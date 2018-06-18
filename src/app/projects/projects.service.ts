@@ -43,12 +43,28 @@ export class ProjectsService {
         return this.http.get<any>(this.projectsUrl + this.projectId);
     }
 
-    edit(projectId) {
-
+    /**
+     * Update the project given with the Id of the project
+     *
+     * @param projectId
+     * @param data
+     * @return {Observable<any>}
+     */
+    update(projectId, data) {
+        return this.http.patch<any>(this.projectsUrl + this.projectId, data);
     }
 
-    update(projectId) {
-
+    /**
+     * Destroy a project from the database.
+     *
+     * @param data
+     * @return {Observable<any>}
+     */
+    create(data) {
+        return this.http.post<any>(this.projectsUrl, data);
     }
 
+    destroy(projectId) {
+        return this.http.delete<any>(this.projectsUrl + projectId);
+    }
 }

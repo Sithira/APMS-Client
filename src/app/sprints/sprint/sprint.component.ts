@@ -13,6 +13,7 @@ export class SprintComponent implements OnInit {
 
 
     sprint = [];
+    project = [];
 
     constructor(private http: HttpClient,
                 private sprintService: SprintsService,
@@ -22,27 +23,7 @@ export class SprintComponent implements OnInit {
     }
 
     ngOnInit() {
-
-        const {
-            projectId,
-            sprintId
-        } = this.activeRoute.snapshot.params;
-
-        this.sprintService.projectId = projectId;
-
-        this.sprintService.sprintId = sprintId;
-
-        this.sprintService.show(sprintId, undefined).subscribe(response => {
-                console.log(response);
-                this.sprint = response.data;
-            }, error => {
-                console.log(error);
-
-                if (error instanceof HttpErrorResponse) {
-                    this.flash.show(error.error.message, {cssClass: 'alert-danger alert', timeout: 5000});
-                }
-            }
-        );
+        this.loadRelations();
     }
 
     loadRelations() {
@@ -51,17 +32,31 @@ export class SprintComponent implements OnInit {
             sprintId
         } = this.activeRoute.snapshot.params;
 
+        // set the project id
         this.sprintService.projectId = projectId;
 
+        // set the sprint id
         this.sprintService.sprintId = sprintId;
 
+        this.sprintService.getProject().subscribe(results => {
+            console.log(results);
+            this.project = results.data;
+        }, error => {
+            console.log(error);
+        });
+
+        // call the service
         this.sprintService.show(sprintId, true).subscribe(response => {
             console.log(response);
             this.sprint = response.data;
         }, error => {
             console.log(error);
-            this.flash.show(error.error.message, {cssClass: 'alert-danger alert', timeout: 5000});
-            this.router.navigate(['/projects/' + projectId ]);
+            if (error instanceof HttpErrorResponse) {
+                this.flash.show(error.error.message, {cssClass: 'alert-danger alert', timeout: 5000});
+            }
+
+            // navigate the to the parent page, when an HTTP error occures
+            this.router.navigate(['projects/' + projectId]);
         });
     }
 

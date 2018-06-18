@@ -20,10 +20,18 @@ export class LoginComponent implements OnInit {
     login() {
         this.auth.login(this.loginDetails).subscribe(res => {
                 console.log(res);
-                localStorage.setItem('user', JSON.stringify(res.data.user));
-                localStorage.setItem('access-token', res.data.payLoad.token);
-                this.router.navigate(['/dashboard']);
-            }, err => console.log(err)
+
+                // set the token to the localStorage
+                this.auth.setToken(res.data.payLoad.token);
+
+                // set the user to the localStorage
+                this.auth.setUser(res.data.user);
+
+                // navigate the user to the dashboard.
+                this.router.navigate(['projects']);
+            }, err => {
+                console.log(err);
+            }
         );
     }
 

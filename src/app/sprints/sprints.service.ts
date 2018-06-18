@@ -15,6 +15,10 @@ export class SprintsService {
     constructor(private http: HttpClient) {
     }
 
+    getProject() {
+        return this.http.get<any>(this.sprintUrl + this.projectId);
+    }
+
     index() {
         return this.http.get<any>(this.sprintUrl + this.projectId + '/sprints');
     }

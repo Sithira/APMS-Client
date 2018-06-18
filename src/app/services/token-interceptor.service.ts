@@ -8,7 +8,7 @@ import {AuthService} from './auth.service';
 })
 export class TokenInterceptorService implements HttpInterceptor {
 
-    token = '';
+    token = undefined;
 
     constructor(private auth: AuthService) {
         this.token = this.auth.getToken();

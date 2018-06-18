@@ -11,8 +11,9 @@ import {FlashMessagesService} from 'angular2-flash-messages';
 })
 export class SprintsComponent implements OnInit {
 
-    sprints = [];
+    project = [];
 
+    sprints = [];
     constructor(
         private sprintService: SprintsService,
         private activatedRoute: ActivatedRoute,
@@ -20,7 +21,20 @@ export class SprintsComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.sprintService.projectId = this.activatedRoute.snapshot.params['projectId'];
+
+        const {
+            projectId
+        } = this.activatedRoute.snapshot.params;
+
+        this.sprintService.projectId = projectId;
+
+        this.sprintService.getProject().subscribe(result => {
+            console.log(result);
+            this.project = result.data;
+        }, error => {
+            console.log(error);
+            this.flash.show(error.error.message, { cssClass: 'alert alert-danger', timeout: 5000 });
+        });
 
         this.sprintService.index().subscribe(
             results => {

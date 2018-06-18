@@ -14,14 +14,9 @@ export class AuthGuard implements CanActivate {
     canActivate(): boolean {
 
         if (this.auth.isTokenPresent()) {
-
-            this.auth.isLoggedIn = true;
             return true;
         } else {
-
-            this.auth.isLoggedIn = false;
             this.router.navigate(['login']);
-
             return false;
         }
     }
