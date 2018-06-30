@@ -7,7 +7,7 @@ import {HttpClient} from '@angular/common/http';
 export class ProjectsService {
 
     // project ID
-    private projectId = '';
+    private projectId: string;
 
     // API End Point for the project's
     private projectsUrl = 'http://localhost:3333/api/v1/projects/';
@@ -20,8 +20,14 @@ export class ProjectsService {
      *
      * @return {Observable<any>}
      */
-    index() {
+    index(pluck) {
+
+        if (pluck === 'pluck') {
+            return this.http.get<any>(this.projectsUrl + '?pluck=true');
+        }
+
         return this.http.get<any>(this.projectsUrl);
+
     }
 
     /**
@@ -35,8 +41,12 @@ export class ProjectsService {
         this.projectId = projectId;
 
         // check for relations load request
-        if (withRelations) {
-            return this.http.get<any>(this.projectsUrl + this.projectId + '/?relations=true');
+        if (withRelations === 'relations') {
+            return this.http.get<any>(this.projectsUrl + this.projectId + '?relations=true');
+        }
+
+        if (withRelations === 'pluck') {
+            return this.http.get<any>(this.projectsUrl + this.projectId + '/?pluck=true');
         }
 
         // just load the project only.
@@ -47,24 +57,36 @@ export class ProjectsService {
      * Update the project given with the Id of the project
      *
      * @param projectId
-     * @param data
+     * @param payLoad
      * @return {Observable<any>}
      */
-    update(projectId, data) {
-        return this.http.patch<any>(this.projectsUrl + this.projectId, data);
+    update(projectId, payLoad) {
+        return this.http.patch<any>(this.projectsUrl + this.projectId, payLoad);
     }
 
     /**
      * Destroy a project from the database.
      *
-     * @param data
+     * @param payLoad
      * @return {Observable<any>}
      */
-    create(data) {
-        return this.http.post<any>(this.projectsUrl, data);
+    create(payLoad) {
+        return this.http.post<any>(this.projectsUrl, payLoad);
     }
 
-    destroy(projectId) {
-        return this.http.delete<any>(this.projectsUrl + projectId);
+    /**
+     * Soft Delete / Force delete an existing project
+     *
+     * @param projectId
+     * @param type
+     * @return {Observable<any>}
+     */
+    destroy(projectId, type) {
+
+        if (type === 'soft') {
+            return this.http.delete<any>(this.projectsUrl + projectId);
+        }
+
+        return this.http.delete<any>(this.projectsUrl + projectId + '/?forceDestroy=true');
     }
 }

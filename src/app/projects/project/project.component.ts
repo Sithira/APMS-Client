@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {ProjectsService} from '../projects.service';
+import {ProjectsService} from '../../services/projects.service';
 import {HttpErrorResponse} from '@angular/common/http';
 import {FlashMessagesService} from 'angular2-flash-messages';
 import {AuthService} from '../../services/auth.service';
@@ -12,13 +12,13 @@ import {AuthService} from '../../services/auth.service';
 })
 export class ProjectComponent implements OnInit {
 
-    projectId;
-
     project = [];
 
     relationsLoaded = false;
 
     authentic: AuthService;
+    private projectId: any;
+    private forceDestory: any;
 
     constructor(
         private auth: AuthService,
@@ -28,16 +28,20 @@ export class ProjectComponent implements OnInit {
         private flash: FlashMessagesService) {
 
         this.authentic = auth;
+
+        // get the id for the project
+        const {
+            projectId,
+            forceDestory = 'false'
+        } = this.activatedRoute.snapshot.params;
+
+        this.projectId = projectId;
+
     }
 
     ngOnInit() {
 
-        // get the id for the project
-        const {
-            projectId
-        } = this.activatedRoute.snapshot.params;
 
-        this.projectId = projectId;
 
         // call the API to get a single project instance instance
         this.projectsService.show(this.projectId, undefined).subscribe(
@@ -50,6 +54,10 @@ export class ProjectComponent implements OnInit {
             },
             error => {
                 console.log(error);
+
+                if (error.status === 401) {
+                    this.router.navigate(['login']);
+                }
 
                 if (error instanceof HttpErrorResponse && error.status === 404) {
                     this.flash.show(error.error.message, {cssClass: 'alert alert-danger', timeout: 5000});
@@ -64,7 +72,7 @@ export class ProjectComponent implements OnInit {
      * Load the project with it's relations
      */
     loadRelations() {
-        this.projectsService.show(this.projectId, true).subscribe(
+        this.projectsService.show(this.projectId, 'relations').subscribe(
             response => {
 
                 console.log(response);
@@ -77,7 +85,28 @@ export class ProjectComponent implements OnInit {
                 console.log(error);
 
                 if (error instanceof HttpErrorResponse) {
-                    this.flash.show('Couldnt load more information about this project.', {cssClass: 'alert alert-danger', timeout: 5000});
+                    this.flash.show('Couldn\'t load more information about this project.', {cssClass: 'alert alert-danger', timeout: 5000});
+                }
+
+            }
+        );
+    }
+
+    pluckRelations() {
+        this.projectsService.show(this.projectId, 'pluck').subscribe(
+            response => {
+
+                console.log(response);
+
+                this.relationsLoaded = true;
+
+                this.project = response.data;
+            },
+            error => {
+                console.log(error);
+
+                if (error instanceof HttpErrorResponse) {
+                    this.flash.show('Couldn\'t load plucks of the project.', {cssClass: 'alert alert-danger', timeout: 5000});
                 }
 
             }
@@ -97,12 +126,14 @@ export class ProjectComponent implements OnInit {
 
             this.flash.show('Project updated successfully', {cssClass: 'alert alert-success', timeout: 5000});
         }, error => {
-
+            if (error instanceof HttpErrorResponse) {
+                this.flash.show(error.error.message, {cssClass: 'alert alert-danger', timeout: 3000});
+            }
         });
     }
 
-    destory() {
-        this.projectsService.destroy(this.projectId).subscribe(response => {
+    delete() {
+        this.projectsService.destroy(this.projectId, this.forceDestory).subscribe(response => {
 
             console.log(response);
 
@@ -111,7 +142,7 @@ export class ProjectComponent implements OnInit {
             this.router.navigate(['projects']);
 
         }, error => {
-
+            this.flash.show(error.error.message);
         });
     }
 }

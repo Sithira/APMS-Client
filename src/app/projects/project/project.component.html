@@ -1,3 +1,23 @@
+<div [hidden]="!authentic.isAdmin()" class="row">
+    <div class="col-sm-12">
+        <div class="dropdown float-right">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                Admin Actions
+            </button>
+            <div class="dropdown-menu">
+                <!-- Button trigger modal -->
+                <a class="dropdown-item" data-toggle="modal" data-target="#updateProjectModal">
+                    Edit this project
+                </a>
+
+                <button [hidden]="!authentic.isAdmin()" onclick="return confirm('Are you sure to delete this project ?')" class="dropdown-item" (click)="delete()">
+                    Remove this project
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="row">
     <div class="col-12">
         <div class="jumbotron mt-5">
@@ -46,7 +66,7 @@
         </div>
     </div>
 
-    <div class="col-md-3 mt-4">
+    <div *ngIf="project.manager" class="col-md-3 mt-4">
         <div class="card">
             <div class="card-body text-center">
                 <h3><i class="fas fa-user-tie"></i> <br /></h3>
@@ -56,15 +76,6 @@
         </div>
     </div>
 </div>
-
-<!-- Button trigger modal -->
-<button [hidden]="!authentic.isAdmin()"  type="button" class="btn btn-primary" data-toggle="modal" data-target="#updateProjectModal">
-    Edit this project
-</button>
-
-<button [hidden]="!authentic.isAdmin()" type="button" class="btn btn-danger" (click)="destory()">
-    Remove this project
-</button>
 
 
 
@@ -85,10 +96,13 @@
 
                 <label>Project Description</label>
                 <textarea id="project.description" name="project.description" [(ngModel)]="project.description" class="form-control rounded-0"></textarea>
+
+                <label></label>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" (click)="create()">Save changes</button>
+                <button type="button" class="btn btn-primary" (click)="update()">Save changes</button>
             </div>
         </div>
     </div>

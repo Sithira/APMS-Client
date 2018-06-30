@@ -1,38 +1,47 @@
-<div class="row">
-    <div class="col-12">
-        <div class="jumbotron mt-5">
-            <h1 class="display-4 text-center">{{ ticket.name }}</h1>
-            <p class="lead text-center">{{ ticket.description }}</p>
-            <hr class="my-4">
-            <!--<p>It uses utility classes for typography and spacing to space content out within the larger container.</p>-->
+<div class="container">
+    <div class="row">
+        <div class="col-12">
 
-            <div class="form-row text-center">
-                <div class="col-12">
-                    <!--<button (click)="loadRelations()" [disabled]="relationsLoaded"  class="btn btn-primary btn-sm">Load More information</button>-->
+            <div class="float-right mt-2">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#exampleModal">
+                    <i class="fa fa-edit"></i> Edit Ticket
+                </button>
+            </div>
+
+            <div class="jumbotron mt-5">
+                <h1 class="display-4 text-center">{{ ticket.name }}</h1>
+                <p class="lead text-center">{{ ticket.description }}</p>
+                <hr class="my-4">
+                <!--<p>It uses utility classes for typography and spacing to space content out within the larger container.</p>-->
+
+                <div class="form-row text-center">
+                    <div class="col-12">
+                        <!--<button (click)="loadRelations()" [disabled]="relationsLoaded"  class="btn btn-primary btn-sm">Load More information</button>-->
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="row">
-    <div class="col-md-6 offset-md-3">
-        <div class="card text-center">
-            <div class="card-header">
-                Ticket Details
-            </div>
-            <div class="card-body">
-                <h4 class="card-title">{{ ticket.name }}</h4>
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card text-center">
+                <div class="card-header">
+                    Ticket Details
+                </div>
+                <div class="card-body">
+                    <h4 class="card-title">{{ ticket.name }}</h4>
 
-                <div class="table-responsive">
-                    <table class="table table-hover table-bordered">
-                        <thead>
-                        <tr>
-                            <th>Item</th>
-                            <th>Detail</th>
-                        </tr>
-                        </thead>
-                        <tbody>
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Detail</th>
+                            </tr>
+                            </thead>
+                            <tbody>
 
                             <tr>
                                 <td scope="row">ticket type</td>
@@ -94,16 +103,68 @@
                                 <td>{{ ticket.definition_of_done }}</td>
                             </tr>
 
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+                <div class="card-footer text-muted">
+                    <div class="row">
+                        <p class="text-left col-md-6">created at: {{ ticket.created_at | date }}</p>
+                        <p class="text-right col-md-6">updated at: {{ ticket.updated_at | date }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Ticket</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <flash-messages></flash-messages>
+
+                <div class="form-group">
+                    <label>Name: </label>
+                    <input type="text" class="form-control" [(ngModel)]="ticket.name">
+                </div>
+
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea class="form-control" [(ngModel)]="ticket.description"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Status: </label>
+                    <select class="form-control" [(ngModel)]="ticket.status">
+                        <option value="-1">Completed</option>
+                        <option value="0">On-Going</option>
+                        <option value="1">Completed</option>
+                    </select>
+                </div>
+
+
+                <div class="form-group">
+                    <label>Sprint</label>
+                    <select class="form-control" [(ngModel)]="ticket._sprint_id">
+                        <option *ngFor="let sprint of sprints" value="{{ sprint._id }}">{{ sprint.name }}</option>
+                    </select>
                 </div>
 
             </div>
-            <div class="card-footer text-muted">
-                <div class="row">
-                    <p class="text-left col-md-6">created at: {{ ticket.created_at | date }}</p>
-                    <p class="text-right col-md-6">updated at: {{ ticket.updated_at | date }}</p>
-                </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" (click)="update()">Save changes</button>
             </div>
         </div>
     </div>

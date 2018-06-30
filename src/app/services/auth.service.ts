@@ -84,15 +84,21 @@ export class AuthService {
     }
 
     isAdmin() {
-        return this.getUser().type === 'admin';
+        if (this.getUser()) {
+            return this.getUser().type === 'admin';
+        }
     }
 
     isClient() {
-        return this.getUser().type === 'client';
+        if (this.getUser()) {
+            return this.getUser().type === 'client';
+        }
     }
 
     isManager() {
-        return this.getUser().type === 'manager';
+        if (this.getUser()) {
+            return this.getUser().type === 'manager';
+        }
     }
 
 

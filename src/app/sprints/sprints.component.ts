@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {SprintsService} from './sprints.service';
+import {SprintsService} from '../services/sprints.service';
 import {ActivatedRoute} from '@angular/router';
 import {HttpErrorResponse} from '@angular/common/http';
 import {FlashMessagesService} from 'angular2-flash-messages';
@@ -10,7 +10,6 @@ import {FlashMessagesService} from 'angular2-flash-messages';
     styleUrls: ['./sprints.component.css']
 })
 export class SprintsComponent implements OnInit {
-
     project = [];
 
     sprints = [];
@@ -26,9 +25,7 @@ export class SprintsComponent implements OnInit {
             projectId
         } = this.activatedRoute.snapshot.params;
 
-        this.sprintService.projectId = projectId;
-
-        this.sprintService.getProject().subscribe(result => {
+        this.sprintService.getProject(projectId).subscribe(result => {
             console.log(result);
             this.project = result.data;
         }, error => {
@@ -36,7 +33,7 @@ export class SprintsComponent implements OnInit {
             this.flash.show(error.error.message, { cssClass: 'alert alert-danger', timeout: 5000 });
         });
 
-        this.sprintService.index().subscribe(
+        this.sprintService.index(projectId, null).subscribe(
             results => {
                 console.log(results);
                 this.sprints = results.data;

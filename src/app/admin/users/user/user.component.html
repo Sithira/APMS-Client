@@ -1,0 +1,77 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-3 mt-3">
+            <div class="card">
+                <h3 class="card-header"><i class="fa fa-user"></i>  {{ user.name }}</h3>
+                <div class="card-block mt-2 mb-2">
+                    <div class="text-center">
+                        <img src="http://www.placehold.it/150x150" alt="Card image cap" />
+                    </div>
+
+                    <div class="text-center">
+                        <p>Name: {{ user.name }}</p>
+                        <p>Email: {{ user.email }}</p>
+                        <p>Type: <span style="font-weight: bold">{{ user.type }}</span></p>
+                        <p>Joined Date: {{ user.created_at | date: 'short' }}</p>
+                        <p>Last updated Date: {{ user.updated_at | date: 'short' }}</p>
+                    </div>
+
+                </div>
+
+                <div class="card-footer text-muted">
+                    <a href="javascript:void(0)" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary">Edit this user</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <flash-messages></flash-messages>
+
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" class="form-control rounded-0" [(ngModel)]="user.name">
+                </div>
+
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="text" class="form-control rounded-0" [(ngModel)]="user.email">
+                </div>
+
+                <div class="form-group">
+                    <label>Type</label>
+                    <select class="form-control" [(ngModel)]="user.type">
+                        <option value="admin">Admin</option>
+                        <option value="manager">Manager</option>
+                        <option value="client">Client</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Team</label>
+                    <select class="form-control" [(ngModel)]="user._team_id">
+                        <option>No Team</option>
+                        <option *ngFor="let team of teams" value="{{ team._id }}">{{ team.name }}</option>
+                    </select>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" (click)="save()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -5,15 +5,14 @@ import {AuthService} from '../services/auth.service';
 @Injectable({
     providedIn: 'root'
 })
-export class AuthGuard implements CanActivate, CanActivateChild {
-
+export class AdminGuard implements CanActivate, CanActivateChild {
     constructor(private auth: AuthService, private router: Router) {
 
     }
 
     canActivate(): boolean {
 
-        if (this.auth.isTokenPresent()) {
+        if (this.auth.isTokenPresent() && (this.auth.isAdmin() || this.auth.isManager())) {
             return true;
         } else {
             this.router.navigate(['login']);
@@ -24,5 +23,4 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     canActivateChild(): boolean {
         return this.canActivate();
     }
-
 }

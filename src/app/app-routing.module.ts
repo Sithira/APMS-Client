@@ -10,6 +10,10 @@ import {ErrorPageComponent} from './error-page/error-page.component';
 import {SprintComponent} from './sprints/sprint/sprint.component';
 import {TicketComponent} from './tickets/ticket/ticket.component';
 import {SprintsComponent} from './sprints/sprints.component';
+import {AdminGuard} from './guards/admin.guard';
+import {UsersComponent} from './admin/users/users.component';
+import {AdminComponent} from './admin/admin.component';
+import {UserComponent} from './admin/users/user/user.component';
 
 const routes: Routes = [
     {
@@ -45,6 +49,24 @@ const routes: Routes = [
             {
                 path: ':projectId/sprints/:sprintId/tickets/:ticketId',
                 component: TicketComponent
+            }
+        ]
+    },
+    {
+        path: 'admin',
+        canActivate: [AdminGuard],
+        children: [
+            {
+                path: '',
+                component: AdminComponent
+            },
+            {
+                path: 'users',
+                component: UsersComponent,
+            },
+            {
+                path: 'users/:userId',
+                component: UserComponent
             }
         ]
     },

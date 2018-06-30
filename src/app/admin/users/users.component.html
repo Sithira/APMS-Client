@@ -1,0 +1,36 @@
+<div class="row mt-2">
+    <div class="col-md-12">
+
+        <h3>
+            <i class="fa fa-users"></i> List of users
+        </h3>
+
+        <br/>
+
+        <div class="table-responsive">
+
+            <table datatable class="table">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Member Since</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let user of users">
+                    <td scope="row">{{ user.name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.created_at | date: 'short' }}</td>
+                    <td>
+                        <a href="/admin/users/{{ user._id }}">Edit</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+</div>

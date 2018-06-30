@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {SprintsService} from '../sprints.service';
+import {HttpErrorResponse} from '@angular/common/http';
+import {SprintsService} from '../../services/sprints.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FlashMessagesService} from 'angular2-flash-messages';
 
@@ -15,7 +15,7 @@ export class SprintComponent implements OnInit {
     sprint = [];
     project = [];
 
-    constructor(private http: HttpClient,
+    constructor(
                 private sprintService: SprintsService,
                 private activeRoute: ActivatedRoute,
                 private flash: FlashMessagesService,
@@ -26,19 +26,16 @@ export class SprintComponent implements OnInit {
         this.loadRelations();
     }
 
+    /**
+     * Load a sprint with relations.
+     */
     loadRelations() {
         const {
             projectId,
             sprintId
         } = this.activeRoute.snapshot.params;
 
-        // set the project id
-        this.sprintService.projectId = projectId;
-
-        // set the sprint id
-        this.sprintService.sprintId = sprintId;
-
-        this.sprintService.getProject().subscribe(results => {
+        this.sprintService.getProject(projectId).subscribe(results => {
             console.log(results);
             this.project = results.data;
         }, error => {
@@ -46,7 +43,7 @@ export class SprintComponent implements OnInit {
         });
 
         // call the service
-        this.sprintService.show(sprintId, true).subscribe(response => {
+        this.sprintService.show(projectId, sprintId, 'relations').subscribe(response => {
             console.log(response);
             this.sprint = response.data;
         }, error => {
@@ -59,5 +56,4 @@ export class SprintComponent implements OnInit {
             this.router.navigate(['projects/' + projectId]);
         });
     }
-
 }

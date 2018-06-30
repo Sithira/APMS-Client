@@ -19,6 +19,10 @@ import {SprintComponent} from './sprints/sprint/sprint.component';
 import {FlashMessagesModule} from 'angular2-flash-messages';
 import { TicketsComponent } from './tickets/tickets.component';
 import { TicketComponent } from './tickets/ticket/ticket.component';
+import {DataTablesModule} from 'angular-datatables';
+import { UsersComponent } from './admin/users/users.component';
+import { AdminComponent } from './admin/admin.component';
+import { UserComponent } from './admin/users/user/user.component';
 
 @NgModule({
     declarations: [
@@ -32,7 +36,10 @@ import { TicketComponent } from './tickets/ticket/ticket.component';
         ErrorPageComponent,
         SprintComponent,
         TicketsComponent,
-        TicketComponent
+        TicketComponent,
+        UsersComponent,
+        AdminComponent,
+        UserComponent
     ],
     imports: [
         BrowserModule,
@@ -40,6 +47,7 @@ import { TicketComponent } from './tickets/ticket/ticket.component';
         AppRoutingModule,
         HttpClientModule,
         FlashMessagesModule.forRoot(),
+        DataTablesModule,
     ],
     providers: [
         AuthService,

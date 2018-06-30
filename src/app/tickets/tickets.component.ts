@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {TicketService} from './ticket.service';
+import {TicketService} from '../services/ticket.service';
 import {HttpErrorResponse} from '@angular/common/http';
 import {FlashMessagesService} from 'angular2-flash-messages';
 
@@ -25,11 +25,7 @@ export class TicketsComponent implements OnInit {
             sprintId,
         } = this.activeRoute.snapshot.params;
 
-        this.ticketService.projectId = projectId;
-
-        this.ticketService.sprintId = sprintId;
-
-        this.ticketService.index().subscribe(
+        this.ticketService.index(projectId, sprintId).subscribe(
             response => {
                 console.log(response);
 
@@ -39,7 +35,7 @@ export class TicketsComponent implements OnInit {
                 console.log(error);
 
                 if (error instanceof HttpErrorResponse) {
-                    this.flash.show(error.error.message, { cssClass: 'alert alert-danger', timeout: 8000 });
+                    this.flash.show(error.error.message, { cssClass: 'alert alert-danger', timeout: 3000 });
                 }
             }
         );
